@@ -252,17 +252,17 @@ def display_detection_summary(detections):
                 st.write(f"   Location: ({bbox[0]}, {bbox[1]}) to ({bbox[2]}, {bbox[3]})")
         else:
             st.warning(
-                "No clear dustbins detected. The image may contain other objects that could potentially be containers.")
+                "No clear dustbins detected. The image may contain other Dustbin that could potentially be containers.")
 
         if other_detections:
-            with st.expander(f"Other Detected Objects ({len(other_detections)})"):
+            with st.expander(f"Other Detected Dustbin ({len(other_detections)})"):
                 for i, detection in enumerate(other_detections, 1):
                     st.write(f"{i}. **{detection['class']}** - Confidence: {detection['confidence']:.1%}")
 
         st.subheader("Detection Statistics")
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.metric("Total Objects", len(detections))
+            st.metric("Total Dustbin", len(detections))
         with col2:
             st.metric("Potential Dustbins", len(dustbin_detections))
         with col3:
@@ -270,20 +270,20 @@ def display_detection_summary(detections):
             st.metric("Avg Confidence", f"{avg_confidence:.1%}")
 
     else:
-        st.info("No objects detected in the image. Try uploading an image with clearer objects or containers.")
+        st.info("No Dustbin detected in the image. Try uploading an image with clearer Dustbin or containers.")
 
 
 def display_batch_results(batch_results, all_detections):
     st.subheader("Batch Processing Results")
 
     total_dustbins = sum(len([d for d in result['detections'] if d['is_dustbin_like']]) for result in batch_results)
-    total_objects = len(all_detections)
+    total_Dustbin = len(all_detections)
 
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.metric("Images Processed", len(batch_results))
     with col2:
-        st.metric("Total Objects", total_objects)
+        st.metric("Total Dustbin", total_Dustbin)
     with col3:
         st.metric("Total Dustbins", total_dustbins)
     with col4:
@@ -310,7 +310,7 @@ def display_batch_results(batch_results, all_detections):
             dustbin_count = len([d for d in result['detections'] if d['is_dustbin_like']])
             total_count = len(result['detections'])
 
-            with st.expander(f"{result['filename']} - {dustbin_count} dustbins, {total_count} total objects"):
+            with st.expander(f"{result['filename']} - {dustbin_count} dustbins, {total_count} total Dustbin"):
                 col1, col2 = st.columns(2)
                 with col1:
                     st.write("**Original**")
@@ -335,7 +335,7 @@ def display_batch_results(batch_results, all_detections):
 
             summary_data.append({
                 'Filename': result['filename'],
-                'Total Objects': total_count,
+                'Total Dustbin': total_count,
                 'Dustbins Found': dustbin_count,
                 'Max Confidence': f"{max_conf:.1%}",
                 'Status': '✅ Processed'
@@ -396,7 +396,7 @@ def main():
             image_cv = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
 
             # Perform detection
-            with st.spinner("Detecting objects..."):
+            with st.spinner("Detecting Dustbin..."):
                 annotated_image, detections = detect_dustbins(image_cv, model)
 
             if annotated_image is not None:
@@ -405,7 +405,7 @@ def main():
 
                 with col2:
                     st.subheader("Detection Results")
-                    st.image(annotated_image_rgb, caption="Detected Objects", use_column_width=True)
+                    st.image(annotated_image_rgb, caption="Detected Dustbin", use_column_width=True)
 
                 # Display detection summary
                 display_detection_summary(detections)
@@ -456,3 +456,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
